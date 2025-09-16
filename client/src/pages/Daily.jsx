@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../lib/api.js';
 
-const REASONS = ['health','program','travel','other'];
+const REASONS = ['health','program','travel','public_holiday','other'];
 
 export default function Daily() {
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0,10));

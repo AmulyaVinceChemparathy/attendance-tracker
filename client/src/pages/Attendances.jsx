@@ -52,11 +52,12 @@ export default function Attendances() {
 			health: 'bg-red-100 text-red-800',
 			program: 'bg-blue-100 text-blue-800',
 			travel: 'bg-yellow-100 text-yellow-800',
+			public_holiday: 'bg-purple-100 text-purple-800',
 			other: 'bg-gray-100 text-gray-800'
 		};
 		return (
 			<span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[reason] || colors.other}`}>
-				{reason}
+				{reason === 'public_holiday' ? 'Public Holiday' : reason}
 			</span>
 		);
 	}
