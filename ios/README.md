@@ -167,3 +167,4 @@ cd ios && xcodebuild -workspace AttendanceTracker.xcworkspace -scheme Attendance
 - The app supports both light and dark themes (configurable)
 - All screens are responsive and work on different screen sizes
 
+

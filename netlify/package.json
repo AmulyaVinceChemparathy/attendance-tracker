@@ -2,11 +2,12 @@
   "name": "attendance-tracker-netlify",
   "version": "1.0.0",
   "description": "Attendance Tracker for Netlify deployment",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.js"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -16,7 +17,8 @@
     "better-sqlite3": "^9.2.2",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -25,4 +27,3 @@
     "vite": "^5.0.8"
   }
 }
-

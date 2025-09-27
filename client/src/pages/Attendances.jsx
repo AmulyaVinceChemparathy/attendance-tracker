@@ -238,7 +238,7 @@ export default function Attendances() {
 		<div>
 			<div className="card">
 				<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-					<h2>Attendance Records</h2>
+				<h2>Attendance Records</h2>
 					{viewMode !== 'months' && (
 						<button 
 							onClick={viewMode === 'subjects' ? handleBackToMonths : handleBackToSubjects}
@@ -276,9 +276,9 @@ export default function Attendances() {
 				{/* Main Content Based on View Mode */}
 				{viewMode === 'months' && (
 					<div>
-						<h3 style={{ marginBottom: '12px', color: '#4a5568', fontSize: '1.2rem' }}>
+					<h3 style={{ marginBottom: '12px', color: '#4a5568', fontSize: '1.2rem' }}>
 							Monthly Attendance Overview
-						</h3>
+					</h3>
 						{getMonthsFromAttendance().length === 0 ? (
 							<div style={{ 
 								textAlign: 'center', 
@@ -296,15 +296,15 @@ export default function Attendances() {
 										key={month.key}
 										onClick={() => handleMonthClick(month)}
 										style={{
-											background: 'rgba(255, 255, 255, 0.9)',
-											padding: '20px',
-											borderRadius: '16px',
+									background: 'rgba(255, 255, 255, 0.9)',
+									padding: '20px',
+									borderRadius: '16px',
 											border: '2px solid rgba(102, 126, 234, 0.2)',
-											boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+									boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
 											cursor: 'pointer',
 											transition: 'all 0.3s ease',
-											position: 'relative',
-											overflow: 'hidden'
+									position: 'relative',
+									overflow: 'hidden'
 										}}
 										onMouseOver={(e) => {
 											e.target.style.transform = 'translateY(-2px)';
@@ -321,8 +321,8 @@ export default function Attendances() {
 										<div style={{ fontSize: '14px', color: '#718096', marginBottom: '12px' }}>
 											{month.records.length} attendance records
 										</div>
-										<div style={{ 
-											position: 'absolute', 
+									<div style={{
+										position: 'absolute',
 											top: '20px', 
 											right: '20px',
 											fontSize: '24px',
@@ -387,9 +387,9 @@ export default function Attendances() {
 											<div style={{ fontSize: '14px', color: '#718096', marginBottom: '8px' }}>
 												{subject.teacher}
 											</div>
-											<div style={{ fontSize: '14px', color: '#718096', marginBottom: '12px' }}>
+									<div style={{ fontSize: '14px', color: '#718096', marginBottom: '12px' }}>
 												Present: {stats.present} / Total: {stats.total}
-											</div>
+									</div>
 											<div style={{ 
 												fontSize: '16px', 
 												fontWeight: '600',
@@ -398,7 +398,7 @@ export default function Attendances() {
 											}}>
 												{Math.round(stats.percentage)}% attendance
 											</div>
-											<div style={{ 
+											<div style={{
 												position: 'absolute', 
 												top: '20px', 
 												right: '20px',
@@ -407,19 +407,19 @@ export default function Attendances() {
 											}}>
 												→
 											</div>
-										</div>
-									);
-								})}
-							</div>
-						)}
+								</div>
+							);
+						})}
 					</div>
+						)}
+				</div>
 				)}
 
 				{viewMode === 'details' && selectedSubject && (
-					<div>
-						<h3 style={{ marginBottom: '12px', color: '#4a5568', fontSize: '1.2rem' }}>
+				<div>
+					<h3 style={{ marginBottom: '12px', color: '#4a5568', fontSize: '1.2rem' }}>
 							{selectedSubject.subject} - {selectedMonth.name}
-						</h3>
+					</h3>
 						<div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 							{selectedSubject.records.map(record => (
 								<div key={record.id} style={{
@@ -499,8 +499,8 @@ export default function Attendances() {
 								</div>
 							))}
 						</div>
-					</div>
-				)}
+						</div>
+					)}
 			</div>
 			
 			{/* Edit Dialog */}

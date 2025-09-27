@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=your-secret-key-change-this
+    volumes:
+      - ./server/data.sqlite:/app/data.sqlite
+    restart: unless-stopped

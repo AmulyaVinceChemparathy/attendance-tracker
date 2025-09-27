@@ -146,3 +146,4 @@ function EditDialog({ classData, onSubmit, onCancel }) {
 	);
 }
 
+
