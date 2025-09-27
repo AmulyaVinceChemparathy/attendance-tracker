@@ -1,10 +1,6 @@
 export function getBaseUrl() {
-	// Use environment variable if available, otherwise fallback to localhost
-	const apiUrl = process.env.REACT_APP_API_URL || process.env.REACT_APP_API_BASE_URL;
-	if (apiUrl) {
-		return `${apiUrl}/api`;
-	}
-	return 'http://localhost:4000/api';
+	// Use Railway backend URL
+	return 'https://tracker-production-bc3f.up.railway.app/api';
 }
 
 export function getToken() {
