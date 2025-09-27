@@ -12,9 +12,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Health check
+// Health check endpoints
+app.get('/health', (_req, res) => {
+	return res.status(200).json({ 
+		status: 'OK', 
+		timestamp: new Date().toISOString(),
+		uptime: process.uptime()
+	});
+});
+
 app.get('/api/health', (_req, res) => {
 	return res.json({ ok: true });
+});
+
+// Root health check for Railway
+app.get('/', (_req, res) => {
+	return res.status(200).json({ 
+		status: 'OK', 
+		message: 'Attendance Tracker API is running',
+		timestamp: new Date().toISOString()
+	});
 });
 
 app.use('/api/auth', authRoutes);
