@@ -29,25 +29,31 @@ router.get('/daily', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-	const { date, classId, attended, reasonCategory, reasonText } = req.body;
-	if (!date || !classId || attended == null) return res.status(400).json({ error: 'Missing fields' });
-	const found = await get('SELECT * FROM classes WHERE id = ? AND user_id = ?', [classId, req.user.id]);
-	if (!found) return res.status(404).json({ error: 'Class not found' });
 	try {
-		await run(
-			`INSERT INTO attendance (user_id, class_id, date, attended, reason_category, reason_text)
-			 VALUES (?, ?, ?, ?, ?, ?)`,
-			[req.user.id, classId, date, attended ? 1 : 0, attended ? null : (reasonCategory || null), attended ? null : (reasonText || null)]
-		);
-	} catch (e) {
-		// If duplicate, update
-		await run(
-			`UPDATE attendance SET attended = ?, reason_category = ?, reason_text = ? WHERE user_id = ? AND class_id = ? AND date = ?`,
-			[attended ? 1 : 0, attended ? null : (reasonCategory || null), attended ? null : (reasonText || null), req.user.id, classId, date]
-		);
+		const { date, classId, attended, reasonCategory, reasonText } = req.body;
+		if (!date || !classId || attended == null) return res.status(400).json({ error: 'Missing fields' });
+		const found = await get('SELECT * FROM classes WHERE id = ? AND user_id = ?', [classId, req.user.id]);
+		if (!found) return res.status(404).json({ error: 'Class not found' });
+		
+		try {
+			await run(
+				`INSERT INTO attendance (user_id, class_id, date, attended, reason_category, reason_text)
+				 VALUES (?, ?, ?, ?, ?, ?)`,
+				[req.user.id, classId, date, attended ? 1 : 0, attended ? null : (reasonCategory || null), attended ? null : (reasonText || null)]
+			);
+		} catch (e) {
+			// If duplicate, update
+			await run(
+				`UPDATE attendance SET attended = ?, reason_category = ?, reason_text = ? WHERE user_id = ? AND class_id = ? AND date = ?`,
+				[attended ? 1 : 0, attended ? null : (reasonCategory || null), attended ? null : (reasonText || null), req.user.id, classId, date]
+			);
+		}
+		const saved = await get('SELECT * FROM attendance WHERE user_id = ? AND class_id = ? AND date = ?', [req.user.id, classId, date]);
+		return res.status(201).json({ attendance: saved });
+	} catch (error) {
+		console.error('Error in attendance POST:', error);
+		return res.status(500).json({ error: 'Internal server error' });
 	}
-	const saved = await get('SELECT * FROM attendance WHERE user_id = ? AND class_id = ? AND date = ?', [req.user.id, classId, date]);
-	return res.status(201).json({ attendance: saved });
 });
 
 router.get('/', async (req, res) => {
@@ -72,6 +78,45 @@ router.get('/stats', async (req, res) => {
 		[req.user.id, req.user.id]
 	);
 	return res.json({ stats: totals.map(t => ({ ...t, attendanceRate: t.total ? t.present / t.total : null })) });
+});
+
+router.put('/', async (req, res) => {
+	try {
+		const { id, attended, reasonCategory, reasonText } = req.body;
+		if (!id || attended == null) return res.status(400).json({ error: 'Missing fields' });
+		
+		await run(
+			`UPDATE attendance SET attended = ?, reason_category = ?, reason_text = ? WHERE id = ? AND user_id = ?`,
+			[attended ? 1 : 0, attended ? null : (reasonCategory || null), attended ? null : (reasonText || null), id, req.user.id]
+		);
+		
+		return res.json({ success: true });
+	} catch (error) {
+		console.error('Error in attendance PUT:', error);
+		return res.status(500).json({ error: 'Internal server error' });
+	}
+});
+
+router.put('/bulk-update', async (req, res) => {
+	try {
+		const { subject, attended, reasonCategory, reasonText } = req.body;
+		if (!subject || attended == null) return res.status(400).json({ error: 'Missing fields' });
+		
+		// Update all attendance records for this subject
+		await run(
+			`UPDATE attendance SET attended = ?, reason_category = ?, reason_text = ? 
+			 WHERE user_id = ? AND class_id IN (
+				SELECT id FROM classes WHERE user_id = ? AND subject = ?
+			 )`,
+			[attended ? 1 : 0, attended ? null : (reasonCategory || null), attended ? null : (reasonText || null), 
+			 req.user.id, req.user.id, subject]
+		);
+		
+		return res.json({ success: true });
+	} catch (error) {
+		console.error('Error in attendance bulk update:', error);
+		return res.status(500).json({ error: 'Internal server error' });
+	}
 });
 
 export default router; 

@@ -1,5 +1,5 @@
 export function getBaseUrl() {
-	return '/api';
+	return 'http://localhost:4000/api';
 }
 
 export function getToken() {

@@ -629,7 +629,10 @@ body {
 }
 
 .event-popup {
-  position: fixed;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
@@ -638,18 +641,19 @@ body {
   z-index: 1001;
   min-width: 280px;
   max-width: 320px;
-  transform: translateX(-50%) translateY(-100%);
-  animation: popupSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* animation: popupSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 @keyframes popupSlideIn {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-90%);
+    transform: translate(-50%, -60%);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(-100%);
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -1622,4 +1626,97 @@ a:focus {
     box-shadow: none;
     border: 1px solid #e2e8f0;
   }
+}
+
+/* Subject Update Dialog Styles */
+.subject-update-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+  min-width: 400px;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.subject-update-dialog h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.subject-update-dialog .form {
+  margin: 0;
+}
+
+.subject-update-dialog .dialog-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.subject-update-dialog .save-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.subject-update-dialog .save-btn:hover {
+  background: #0056b3;
+}
+
+.subject-update-dialog .cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.subject-update-dialog .cancel-btn:hover {
+  background: #545b62;
+}
+
+/* Subject Click Hover Effects */
+.event-title {
+  transition: all 0.2s ease;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.event-title:hover {
+  transform: scale(1.05);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 123, 255, 0.1);
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+}
+
+.event-title:hover::after {
+  content: " ✏️";
+  font-size: 12px;
+  color: #007bff;
+}
+
+/* Make it clear this is clickable */
+.event-title[title="Click to update subject details"] {
+  background: rgba(0, 123, 255, 0.05);
+  border: 1px dashed rgba(0, 123, 255, 0.2);
 } 

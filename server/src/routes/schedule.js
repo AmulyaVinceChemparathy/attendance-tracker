@@ -8,8 +8,10 @@ router.use(requireAuth);
 
 router.get('/', async (req, res) => {
 	const classes = await all('SELECT * FROM classes WHERE user_id = ? ORDER BY day_of_week, start_time', [req.user.id]);
+	console.log('All classes for user:', classes.map(c => ({ id: c.id, subject: c.subject, teacher: c.teacher })));
 	return res.json({ classes });
 });
+
 
 router.post('/', async (req, res) => {
 	const { dayOfWeek, startTime, endTime, subject, teacher, location } = req.body;
@@ -53,5 +55,6 @@ router.delete('/:id', async (req, res) => {
 	await run('DELETE FROM classes WHERE id = ?', [id]);
 	return res.json({ ok: true });
 });
+
 
 export default router; 

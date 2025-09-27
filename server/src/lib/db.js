@@ -50,16 +50,26 @@ export async function initDb() {
 		created_at TEXT DEFAULT (datetime('now'))
 	);`);
 
+	await run(`CREATE TABLE IF NOT EXISTS subjects (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER NOT NULL,
+		name TEXT NOT NULL,
+		teacher TEXT NOT NULL,
+		location TEXT,
+		created_at TEXT DEFAULT (datetime('now')),
+		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+		UNIQUE(user_id, name)
+	);`);
+
 	await run(`CREATE TABLE IF NOT EXISTS classes (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		user_id INTEGER NOT NULL,
+		subject_id INTEGER NOT NULL,
 		day_of_week INTEGER NOT NULL, -- 0=Sun ... 6=Sat
 		start_time TEXT NOT NULL, -- HH:MM
 		end_time TEXT NOT NULL,   -- HH:MM
-		subject TEXT NOT NULL,
-		teacher TEXT NOT NULL,
-		location TEXT,
-		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+		FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 	);`);
 
 	await run(`CREATE TABLE IF NOT EXISTS attendance (
@@ -68,7 +78,7 @@ export async function initDb() {
 		class_id INTEGER NOT NULL,
 		date TEXT NOT NULL, -- YYYY-MM-DD
 		attended INTEGER NOT NULL, -- 1 yes, 0 no
-		reason_category TEXT, -- health, program, travel, other
+		reason_category TEXT, -- health, program, travel, public_holiday, no_class, strike, other
 		reason_text TEXT,
 		created_at TEXT DEFAULT (datetime('now')),
 		UNIQUE(user_id, class_id, date),

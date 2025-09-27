@@ -1,0 +1,3 @@
+-option to edit daily attendances entry
+-changes made to one entry of subject must reflect across all entries of that subject throughout
+-in no attendace-include reason as no class and strike
