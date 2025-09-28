@@ -7,7 +7,10 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - JWT_SECRET=your-secret-key-change-this
+      - JWT_SECRET=${JWT_SECRET}
     volumes:
-      - ./server/data.sqlite:/app/data.sqlite
+      - app_data:/app/data
     restart: unless-stopped
+
+volumes:
+  app_data:
