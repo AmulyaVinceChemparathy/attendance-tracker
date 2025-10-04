@@ -259,12 +259,16 @@ export default function Attendances() {
 				{/* Date Range Filter */}
 				<div className="form row" style={{ marginBottom: '20px' }}>
 					<input
+						id="attendance-from-date"
+						name="fromDate"
 						type="date"
 						placeholder="From Date"
 						value={dateRange.from}
 						onChange={e => setDateRange({ ...dateRange, from: e.target.value })}
 					/>
 					<input
+						id="attendance-to-date"
+						name="toDate"
 						type="date"
 						placeholder="To Date"
 						value={dateRange.to}
@@ -555,6 +559,8 @@ function EditDialog({ record, onSubmit, onCancel }) {
 				<div style={{ display: 'flex', gap: '10px' }}>
 					<label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
 						<input 
+							id="attendance-edit-present" 
+							name="attended" 
 							type="radio" 
 							checked={attended} 
 							onChange={() => setAttended(true)} 
@@ -563,6 +569,8 @@ function EditDialog({ record, onSubmit, onCancel }) {
 					</label>
 					<label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
 						<input 
+							id="attendance-edit-absent" 
+							name="attended" 
 							type="radio" 
 							checked={!attended} 
 							onChange={() => setAttended(false)} 
@@ -576,6 +584,8 @@ function EditDialog({ record, onSubmit, onCancel }) {
 				<div style={{ marginBottom: '15px' }}>
 					<label style={{ display: 'block', marginBottom: '5px' }}>Reason Category:</label>
 					<select 
+						id="attendance-edit-reason-category" 
+						name="reasonCategory" 
 						value={reasonCategory} 
 						onChange={e => setReasonCategory(e.target.value)}
 						style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
@@ -595,6 +605,8 @@ function EditDialog({ record, onSubmit, onCancel }) {
 				<div style={{ marginBottom: '15px' }}>
 					<label style={{ display: 'block', marginBottom: '5px' }}>Additional Details:</label>
 					<input 
+						id="attendance-edit-reason-text" 
+						name="reasonText" 
 						placeholder="Additional details..." 
 						value={reasonText} 
 						onChange={e => setReasonText(e.target.value)}
@@ -606,6 +618,8 @@ function EditDialog({ record, onSubmit, onCancel }) {
 			<div style={{ marginBottom: '15px', padding: '10px', background: '#f8f9fa', borderRadius: '6px', border: '1px solid #e9ecef' }}>
 				<label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
 					<input 
+						id="attendance-edit-apply-all" 
+						name="applyToAllSubject" 
 						type="checkbox" 
 						checked={applyToAllSubject} 
 						onChange={e => setApplyToAllSubject(e.target.checked)}

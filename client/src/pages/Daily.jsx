@@ -27,7 +27,13 @@ export default function Daily() {
 		<div className="card">
 			<h2>Today's Attendance</h2>
 			<div className="row">
-				<label>Date: <input type="date" value={date} onChange={e=>{setDate(e.target.value); load(e.target.value);}} /></label>
+				<label>Date: <input 
+					id="daily-date" 
+					name="date" 
+					type="date" 
+					value={date} 
+					onChange={e=>{setDate(e.target.value); load(e.target.value);}} 
+				/></label>
 			</div>
 			{classes.length === 0 && <div>No classes for this day.</div>}
 			{classes.map(c => (
@@ -73,10 +79,21 @@ function NoDialog({ onSubmit }) {
 	if (!open) return <button onClick={()=>setOpen(true)}>No</button>;
 	return (
 		<div className="dialog">
-			<select value={cat} onChange={e=>setCat(e.target.value)}>
+			<select 
+				id="no-reason-category" 
+				name="reasonCategory" 
+				value={cat} 
+				onChange={e=>setCat(e.target.value)}
+			>
 				{REASONS.map(r => <option key={r} value={r}>{r}</option>)}
 			</select>
-			<input placeholder="Reason (optional)" value={txt} onChange={e=>setTxt(e.target.value)} />
+			<input 
+				id="no-reason-text" 
+				name="reasonText" 
+				placeholder="Reason (optional)" 
+				value={txt} 
+				onChange={e=>setTxt(e.target.value)} 
+			/>
 			<button onClick={()=>{onSubmit(cat, txt); setOpen(false); setCat('health'); setTxt('');}}>Submit</button>
 			<button onClick={()=>setOpen(false)}>Cancel</button>
 		</div>
@@ -111,6 +128,8 @@ function EditDialog({ class: classData, onSubmit, onCancel }) {
 				<div style={{ display: 'flex', gap: '10px' }}>
 					<label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
 						<input 
+							id="edit-attended-present" 
+							name="attended" 
 							type="radio" 
 							checked={attended} 
 							onChange={() => setAttended(true)} 
@@ -119,6 +138,8 @@ function EditDialog({ class: classData, onSubmit, onCancel }) {
 					</label>
 					<label style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
 						<input 
+							id="edit-attended-absent" 
+							name="attended" 
 							type="radio" 
 							checked={!attended} 
 							onChange={() => setAttended(false)} 
@@ -132,6 +153,8 @@ function EditDialog({ class: classData, onSubmit, onCancel }) {
 				<div style={{ marginBottom: '15px' }}>
 					<label style={{ display: 'block', marginBottom: '5px' }}>Reason Category:</label>
 					<select 
+						id="edit-reason-category" 
+						name="reasonCategory" 
 						value={reasonCategory} 
 						onChange={e => setReasonCategory(e.target.value)}
 						style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
@@ -151,6 +174,8 @@ function EditDialog({ class: classData, onSubmit, onCancel }) {
 				<div style={{ marginBottom: '15px' }}>
 					<label style={{ display: 'block', marginBottom: '5px' }}>Reason Details (optional):</label>
 					<input 
+						id="edit-reason-text" 
+						name="reasonText" 
 						placeholder="Additional details..." 
 						value={reasonText} 
 						onChange={e => setReasonText(e.target.value)}

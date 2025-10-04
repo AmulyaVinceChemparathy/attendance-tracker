@@ -4,7 +4,7 @@ FROM node:18-alpine AS client-builder
 # Build client
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 COPY client/ ./
 RUN npm run build
 
@@ -31,6 +31,9 @@ COPY --from=server-builder --chown=nodejs:nodejs /app/server ./
 
 # Copy built client files
 COPY --from=client-builder --chown=nodejs:nodejs /app/client/dist ./public
+
+# Debug: List the contents of the public directory
+RUN ls -la ./public || echo "Public directory not found"
 
 # Create data directory
 RUN mkdir -p /app/data && chown nodejs:nodejs /app/data

@@ -30,6 +30,11 @@ export default function Home() {
 			});
 		} catch (e) {
 			console.error('Failed to load user:', e);
+			// If it's an authentication error, clear the token
+			if (e.message.includes('token') || e.message.includes('Unauthorized')) {
+				localStorage.removeItem('token');
+				window.location.reload();
+			}
 		}
 	}
 
@@ -149,12 +154,16 @@ export default function Home() {
 						) : (
 							<form onSubmit={updateProfile} className="form">
 								<input 
+									id="profile-fullname" 
+									name="fullname" 
 									placeholder="Full Name" 
 									value={profileForm.fullname} 
 									onChange={e => setProfileForm({...profileForm, fullname: e.target.value})} 
 									required 
 								/>
 								<input 
+									id="profile-email" 
+									name="email" 
 									type="email" 
 									placeholder="Email" 
 									value={profileForm.email} 
@@ -162,24 +171,32 @@ export default function Home() {
 									required 
 								/>
 								<input 
+									id="profile-department" 
+									name="department" 
 									placeholder="Department" 
 									value={profileForm.department} 
 									onChange={e => setProfileForm({...profileForm, department: e.target.value})} 
 									required 
 								/>
 								<input 
+									id="profile-semester" 
+									name="semester" 
 									placeholder="Semester" 
 									value={profileForm.semester} 
 									onChange={e => setProfileForm({...profileForm, semester: e.target.value})} 
 									required 
 								/>
 								<input 
+									id="profile-batch" 
+									name="batch" 
 									placeholder="Batch" 
 									value={profileForm.batch} 
 									onChange={e => setProfileForm({...profileForm, batch: e.target.value})} 
 									required 
 								/>
 								<input 
+									id="profile-rollNumber" 
+									name="rollNumber" 
 									placeholder="Roll Number" 
 									value={profileForm.rollNumber} 
 									onChange={e => setProfileForm({...profileForm, rollNumber: e.target.value})} 
@@ -199,6 +216,8 @@ export default function Home() {
 							<form onSubmit={changePassword} className="form password-form">
 								<h4>Change Password</h4>
 								<input 
+									id="password-current" 
+									name="currentPassword" 
 									type="password" 
 									placeholder="Current Password" 
 									value={passwordForm.currentPassword} 
@@ -206,6 +225,8 @@ export default function Home() {
 									required 
 								/>
 								<input 
+									id="password-new" 
+									name="newPassword" 
 									type="password" 
 									placeholder="New Password" 
 									value={passwordForm.newPassword} 
@@ -213,6 +234,8 @@ export default function Home() {
 									required 
 								/>
 								<input 
+									id="password-confirm" 
+									name="confirmPassword" 
 									type="password" 
 									placeholder="Confirm New Password" 
 									value={passwordForm.confirmPassword} 

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../data.sqlite');
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../data.sqlite');
 
 export const db = new sqlite3.Database(DB_PATH);
 
@@ -50,26 +50,17 @@ export async function initDb() {
 		created_at TEXT DEFAULT (datetime('now'))
 	);`);
 
-	await run(`CREATE TABLE IF NOT EXISTS subjects (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		user_id INTEGER NOT NULL,
-		name TEXT NOT NULL,
-		teacher TEXT NOT NULL,
-		location TEXT,
-		created_at TEXT DEFAULT (datetime('now')),
-		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-		UNIQUE(user_id, name)
-	);`);
-
 	await run(`CREATE TABLE IF NOT EXISTS classes (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		user_id INTEGER NOT NULL,
-		subject_id INTEGER NOT NULL,
 		day_of_week INTEGER NOT NULL, -- 0=Sun ... 6=Sat
 		start_time TEXT NOT NULL, -- HH:MM
 		end_time TEXT NOT NULL,   -- HH:MM
-		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-		FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+		subject TEXT NOT NULL,
+		teacher TEXT NOT NULL,
+		location TEXT,
+		created_at TEXT DEFAULT (datetime('now')),
+		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 	);`);
 
 	await run(`CREATE TABLE IF NOT EXISTS attendance (

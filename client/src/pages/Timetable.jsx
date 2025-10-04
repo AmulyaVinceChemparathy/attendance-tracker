@@ -88,16 +88,53 @@ export default function Timetable() {
 						<h2>{editingClass ? 'Edit Class' : 'Edit Timetable'}</h2>
 						{!showCalendar && (
 							<form onSubmit={save} className="form">
-								<select value={form.dayOfWeek} onChange={e=>setForm({...form, dayOfWeek:Number(e.target.value)})}>
+								<select 
+									id="class-dayOfWeek" 
+									name="dayOfWeek" 
+									value={form.dayOfWeek} 
+									onChange={e=>setForm({...form, dayOfWeek:Number(e.target.value)})}
+								>
 									{['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>(<option key={i} value={i}>{d}</option>))}
 								</select>
 								<div className="row">
-									<input value={form.startTime} onChange={e=>setForm({...form, startTime:e.target.value})} type="time" />
-									<input value={form.endTime} onChange={e=>setForm({...form, endTime:e.target.value})} type="time" />
+									<input 
+										id="class-startTime" 
+										name="startTime" 
+										value={form.startTime} 
+										onChange={e=>setForm({...form, startTime:e.target.value})} 
+										type="time" 
+									/>
+									<input 
+										id="class-endTime" 
+										name="endTime" 
+										value={form.endTime} 
+										onChange={e=>setForm({...form, endTime:e.target.value})} 
+										type="time" 
+									/>
 								</div>
-								<input placeholder="Subject" value={form.subject} onChange={e=>setForm({...form, subject:e.target.value})} required />
-								<input placeholder="Teacher" value={form.teacher} onChange={e=>setForm({...form, teacher:e.target.value})} required />
-								<input placeholder="Location (optional)" value={form.location} onChange={e=>setForm({...form, location:e.target.value})} />
+								<input 
+									id="class-subject" 
+									name="subject" 
+									placeholder="Subject" 
+									value={form.subject} 
+									onChange={e=>setForm({...form, subject:e.target.value})} 
+									required 
+								/>
+								<input 
+									id="class-teacher" 
+									name="teacher" 
+									placeholder="Teacher" 
+									value={form.teacher} 
+									onChange={e=>setForm({...form, teacher:e.target.value})} 
+									required 
+								/>
+								<input 
+									id="class-location" 
+									name="location" 
+									placeholder="Location (optional)" 
+									value={form.location} 
+									onChange={e=>setForm({...form, location:e.target.value})} 
+								/>
 								<div className="form-buttons">
 									<button type="submit">{editingClass ? 'Update Class' : 'Add Class'}</button>
 									{editingClass && (

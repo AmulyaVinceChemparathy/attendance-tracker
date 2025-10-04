@@ -3,10 +3,10 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from './state/AuthContext.jsx';
 
 export default function App() {
-	const { token, setToken } = useAuth();
+	const { token, logout } = useAuth();
 	const navigate = useNavigate();
-	function logout() {
-		setToken(null);
+	function handleLogout() {
+		logout();
 		navigate('/login');
 	}
 	return (
@@ -20,7 +20,7 @@ export default function App() {
 					{token && <Link to="/attendances">Attendances</Link>}
 					{!token && <Link to="/login">Login</Link>}
 					{!token && <Link to="/register">Register</Link>}
-					{token && <button onClick={logout}>Logout</button>}
+					{token && <button onClick={handleLogout}>Logout</button>}
 				</nav>
 			</header>
 			<main className="main">

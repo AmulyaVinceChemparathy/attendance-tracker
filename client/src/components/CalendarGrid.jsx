@@ -157,7 +157,7 @@ export default function CalendarGrid({ items = [], onSelectSlot, onEdit, onDelet
 				))}
 			</div>
 
-			{selectedEvent && createPortal(
+			{selectedEvent && typeof document !== 'undefined' && createPortal(
 				<>
 					<div 
 						className="popup-overlay" 

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
 	try {
+		console.log('Registration attempt received:', { email: req.body.email, fullname: req.body.fullname });
 		const { fullname, department, semester, batch, rollNumber, email, password } = req.body;
 		if (!fullname || !department || !semester || !batch || !rollNumber || !email || !password) {
 			return res.status(400).json({ error: 'Missing required fields' });
@@ -20,25 +21,33 @@ router.post('/register', async (req, res) => {
 			[fullname, department, semester, batch, rollNumber, email.toLowerCase(), passwordHash]
 		);
 		const token = signToken({ id: result.id });
+		console.log('User created, token generated, sending response');
 		return res.status(201).json({ token });
 	} catch (err) {
-		console.error(err);
+		console.error('Registration error:', err);
 		return res.status(500).json({ error: 'Server error' });
 	}
 });
 
 router.post('/login', async (req, res) => {
 	try {
+		console.log('Login attempt received:', { email: req.body.email });
 		const { email, password } = req.body;
 		if (!email || !password) return res.status(400).json({ error: 'Missing email or password' });
+		
 		const user = await get('SELECT * FROM users WHERE email = ?', [email.toLowerCase()]);
+		console.log('User found:', user ? 'Yes' : 'No');
 		if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+		
 		const ok = await bcrypt.compare(password, user.password_hash);
+		console.log('Password match:', ok);
 		if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
+		
 		const token = signToken({ id: user.id });
+		console.log('Token generated, sending response');
 		return res.json({ token });
 	} catch (err) {
-		console.error(err);
+		console.error('Login error:', err);
 		return res.status(500).json({ error: 'Server error' });
 	}
 });

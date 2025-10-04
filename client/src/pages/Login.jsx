@@ -13,10 +13,20 @@ export default function Login() {
 		e.preventDefault();
 		setError('');
 		try {
+			console.log('Attempting login with:', { email, password: '***' });
 			const res = await api('/auth/login', { method: 'POST', body: { email, password } });
-			setToken(res.token);
-			navigate('/');
+			console.log('Login response:', res);
+			if (res.token) {
+				// Set token in localStorage immediately
+				localStorage.setItem('token', res.token);
+				setToken(res.token);
+				console.log('Token set, navigating to home');
+				navigate('/');
+			} else {
+				setError('No token received from server');
+			}
 		} catch (e) {
+			console.error('Login error:', e);
 			setError(e.message);
 		}
 	}
@@ -24,8 +34,24 @@ export default function Login() {
 		<div className="card">
 			<h2>Login</h2>
 			<form onSubmit={submit} className="form">
-				<input type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required />
-				<input type="password" placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} required />
+				<input 
+					id="login-email" 
+					name="email" 
+					type="email" 
+					placeholder="Email" 
+					value={email} 
+					onChange={e=>setEmail(e.target.value)} 
+					required 
+				/>
+				<input 
+					id="login-password" 
+					name="password" 
+					type="password" 
+					placeholder="Password" 
+					value={password} 
+					onChange={e=>setPassword(e.target.value)} 
+					required 
+				/>
 				<button type="submit">Login</button>
 				{error && <div className="error">{error}</div>}
 			</form>
