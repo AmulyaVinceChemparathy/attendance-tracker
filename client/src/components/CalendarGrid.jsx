@@ -46,7 +46,7 @@ function getEventHeight(event) {
 	return endHour - startHour;
 }
 
-export default function CalendarGrid({ items = [], onSelectSlot, onEdit, onDelete }) {
+export default function CalendarGrid({ items = [], onSelectSlot, onEdit, onDelete, onTakeAttendance }) {
 	const [selectedEvent, setSelectedEvent] = useState(null);
 	const [now, setNow] = useState(new Date());
 
@@ -191,8 +191,20 @@ export default function CalendarGrid({ items = [], onSelectSlot, onEdit, onDelet
 							<div className="popup-item"><strong>Time:</strong> {selectedEvent.startTime} - {selectedEvent.endTime}</div>
 							<div className="popup-item"><strong>Day:</strong> {days[selectedEvent.dayOfWeek]}</div>
 						</div>
-						{(onEdit || onDelete) && (
+						{(onEdit || onDelete || onTakeAttendance) && (
 							<div className="popup-actions">
+								{onTakeAttendance && (
+									<button
+										type="button"
+										className="edit-btn"
+										onClick={() => {
+											onTakeAttendance(selectedEvent);
+											closePopup();
+										}}
+									>
+										Update daily attendance
+									</button>
+								)}
 								{onEdit && (
 									<button 
 										className="edit-btn" 

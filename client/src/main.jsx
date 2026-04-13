@@ -8,6 +8,10 @@ import Home from './pages/Home.jsx';
 import Timetable from './pages/Timetable.jsx';
 import Daily from './pages/Daily.jsx';
 import Attendances from './pages/Attendances.jsx';
+import TeacherDaily from './pages/TeacherDaily.jsx';
+import TeacherSubjects from './pages/TeacherSubjects.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 import { AuthProvider, useAuth } from './state/AuthContext.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import './styles.css';
@@ -27,8 +31,12 @@ createRoot(document.getElementById('root')).render(
 							<Route index element={<PrivateRoute><Home /></PrivateRoute>} />
 							<Route path="register" element={<Register />} />
 							<Route path="login" element={<Login />} />
+							<Route path="forgot-password" element={<ForgotPassword />} />
+							<Route path="reset-password" element={<ResetPassword />} />
 							<Route path="timetable" element={<PrivateRoute><Timetable /></PrivateRoute>} />
 							<Route path="daily" element={<PrivateRoute><Daily /></PrivateRoute>} />
+							<Route path="teacher/daily" element={<PrivateRoute><TeacherDaily /></PrivateRoute>} />
+							<Route path="teacher/subjects" element={<PrivateRoute><TeacherSubjects /></PrivateRoute>} />
 							<Route path="attendances" element={<PrivateRoute><Attendances /></PrivateRoute>} />
 						</Route>
 					</Routes>

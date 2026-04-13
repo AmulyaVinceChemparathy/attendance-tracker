@@ -1,11 +1,11 @@
 export function getBaseUrl() {
-	// In production, use relative URLs since frontend and backend are served from same domain
+	// Use relative /api so Vite proxy (dev) or same server (prod) handles it — local only, no cloud URLs
 	if (import.meta.env.PROD) {
 		return '/api';
 	}
-	// Use environment variable or fallback to localhost for development
-	const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-	return `${baseUrl}/api`;
+	// Local dev: use proxy so client talks to Vite (same origin); set VITE_API_URL only if backend is elsewhere
+	const baseUrl = import.meta.env.VITE_API_URL || '';
+	return baseUrl ? `${baseUrl}/api` : '/api';
 }
 
 export function getToken() {

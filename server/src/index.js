@@ -8,25 +8,27 @@ import { initDb } from './lib/db.js';
 import authRoutes from './routes/auth.js';
 import scheduleRoutes from './routes/schedule.js';
 import attendanceRoutes from './routes/attendance.js';
-
-dotenv.config();
+import teacherRoutes from './routes/teacher.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load .env from cwd first, then from project root (parent of server/)
+dotenv.config();
+const projectRoot = path.resolve(__dirname, '../..');
+if (!process.env.JWT_SECRET) {
+	dotenv.config({ path: path.join(projectRoot, '.env') });
+}
+
 const app = express();
 
-// CORS configuration
+// CORS: allow localhost so local dev always works; add FRONTEND_URL when deploying to cloud
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:4000'];
+if (process.env.FRONTEND_URL) {
+	allowedOrigins.push(process.env.FRONTEND_URL);
+}
 const corsOptions = {
-	origin: process.env.NODE_ENV === 'production' 
-		? [
-			process.env.FRONTEND_URL, 
-			'https://attendance-tracker-production.up.railway.app', 
-			'https://attendance-tracker.onrender.com',
-			'https://attendance-tracker-production.up.railway.app',
-			'https://attendance-tracker.onrender.com'
-		]
-		: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:4000'],
+	origin: allowedOrigins,
 	credentials: true,
 	optionsSuccessStatus: 200,
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -62,7 +64,7 @@ app.get('/api/test', (_req, res) => {
 });
 
 
-// Root health check for Railway
+// Root health check (used by some hosts; safe for local too)
 app.get('/', (_req, res) => {
 	return res.status(200).json({ 
 		status: 'OK', 
@@ -75,6 +77,7 @@ app.get('/', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/teacher', teacherRoutes);
 
 // Catch-all handler: send back React's index.html file for any non-API routes
 if (process.env.NODE_ENV === 'production') {
@@ -96,7 +99,8 @@ const requiredEnvVars = ['JWT_SECRET'];
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
 if (missingEnvVars.length > 0) {
-	console.error('Missing required environment variables:', missingEnvVars);
+	console.error('Missing required environment variables:', missingEnvVars.join(', '));
+	console.error('Set JWT_SECRET (e.g. in .env, or: export JWT_SECRET=your-secret-key / docker run -e JWT_SECRET=...)');
 	process.exit(1);
 }
 

@@ -109,6 +109,18 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
+.header nav .nav-muted {
+  opacity: 0.65;
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  color: #718096;
+}
+
+.muted {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
 /* Main Content */
 .main { 
   padding: 32px; 
@@ -239,6 +251,123 @@ body {
 
 .form button:active {
   transform: translateY(-1px);
+}
+
+/* Teacher panel: list + standalone buttons match .form button (menu only styled links by default) */
+.teacher-subject-card {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--glass-border, #e2e8f0);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.teacher-class-detail {
+  margin-top: 24px;
+}
+
+.teacher-panel ul.teacher-menu {
+  margin-top: 12px;
+}
+
+.teacher-panel ul.teacher-menu button.teacher-action-btn {
+  margin-top: 0;
+}
+
+.teacher-panel button.teacher-action-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 12px;
+  padding: 16px 28px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  color: white;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.teacher-panel button.teacher-action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.teacher-panel button.teacher-action-btn:hover::before {
+  left: 100%;
+}
+
+.teacher-panel button.teacher-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.teacher-panel button.teacher-action-btn:active {
+  transform: translateY(-1px);
+}
+
+.teacher-panel button.teacher-action-btn--secondary {
+  background: #4a5568;
+  box-shadow: var(--shadow-sm);
+}
+
+.teacher-panel button.teacher-action-btn--secondary:hover {
+  background: #2d3748;
+}
+
+.teacher-popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.teacher-popup-actions .teacher-action-btn {
+  margin-top: 0;
+}
+
+/* Login/Register section tabs (Student | Teacher) */
+.login-sections {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  border: 2px solid #e2e8f0;
+  background: #f7fafc;
+}
+.section-tab {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: #718096;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.section-tab:hover {
+  background: #edf2f7;
+  color: #2d3748;
+}
+.section-tab.active {
+  background: var(--primary-gradient);
+  color: white;
 }
 
 /* Error Messages */

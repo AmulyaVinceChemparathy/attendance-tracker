@@ -47,9 +47,13 @@ export async function api(path, { method = 'GET', body } = {}) {
 		return {};
 	} catch (error) {
 		console.error('API error:', error);
-		// Handle network errors gracefully
-		if (error.name === 'TypeError' && error.message.includes('fetch')) {
-			throw new Error('Network error: Unable to connect to server');
+		// Handle network errors (connection refused, CORS, wrong URL)
+		if (error.name === 'TypeError' && (error.message.includes('fetch') || error.message.includes('Failed to fetch'))) {
+			const base = getBaseUrl();
+			const hint = base.startsWith('http')
+				? ' Check the server is running (e.g. in server/: npm start) and reachable at ' + base.replace('/api', '')
+				: ' Check the server is running on port 3000 (e.g. in server/: npm start).';
+			throw new Error('Unable to connect to server.' + hint);
 		}
 		throw error;
 	}

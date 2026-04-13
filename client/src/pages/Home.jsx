@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api.js';
-
 export default function Home() {
 	const [user, setUser] = useState(null);
 	const [showProfile, setShowProfile] = useState(false);
@@ -26,7 +25,9 @@ export default function Home() {
 				semester: r.user.semester || '',
 				batch: r.user.batch || '',
 				rollNumber: r.user.roll_number || '',
-				email: r.user.email || ''
+				email: r.user.email || '',
+				studentId: r.user.student_id || '',
+				teacherId: r.user.teacher_id || ''
 			});
 		} catch (e) {
 			console.error('Failed to load user:', e);
@@ -127,22 +128,36 @@ export default function Home() {
 										<label>Email:</label>
 										<span>{user.email}</span>
 									</div>
-									<div className="profile-item">
-										<label>Department:</label>
-										<span>{user.department}</span>
-									</div>
-									<div className="profile-item">
-										<label>Semester:</label>
-										<span>{user.semester}</span>
-									</div>
-									<div className="profile-item">
-										<label>Batch:</label>
-										<span>{user.batch}</span>
-									</div>
-									<div className="profile-item">
-										<label>Roll Number:</label>
-										<span>{user.roll_number}</span>
-									</div>
+									{user.role === 'teacher' && (
+										<div className="profile-item">
+											<label>Teacher ID:</label>
+											<span>{user.teacher_id || '—'}</span>
+										</div>
+									)}
+									{user.role !== 'teacher' && (
+										<>
+											<div className="profile-item">
+												<label>Student ID:</label>
+												<span>{user.student_id || '—'}</span>
+											</div>
+											<div className="profile-item">
+												<label>Department:</label>
+												<span>{user.department || '—'}</span>
+											</div>
+											<div className="profile-item">
+												<label>Semester:</label>
+												<span>{user.semester || '—'}</span>
+											</div>
+											<div className="profile-item">
+												<label>Batch:</label>
+												<span>{user.batch || '—'}</span>
+											</div>
+											<div className="profile-item">
+												<label>Roll Number:</label>
+												<span>{user.roll_number || '—'}</span>
+											</div>
+										</>
+									)}
 								</div>
 								<button 
 									onClick={() => setShowPasswordChange(!showPasswordChange)}
@@ -153,55 +168,71 @@ export default function Home() {
 							</div>
 						) : (
 							<form onSubmit={updateProfile} className="form">
-								<input 
-									id="profile-fullname" 
-									name="fullname" 
-									placeholder="Full Name" 
-									value={profileForm.fullname} 
-									onChange={e => setProfileForm({...profileForm, fullname: e.target.value})} 
-									required 
+								<input
+									id="profile-fullname"
+									name="fullname"
+									placeholder="Full Name"
+									value={profileForm.fullname}
+									onChange={e => setProfileForm({ ...profileForm, fullname: e.target.value })}
+									required
 								/>
-								<input 
-									id="profile-email" 
-									name="email" 
-									type="email" 
-									placeholder="Email" 
-									value={profileForm.email} 
-									onChange={e => setProfileForm({...profileForm, email: e.target.value})} 
-									required 
+								<input
+									id="profile-email"
+									name="email"
+									type="email"
+									placeholder="Email"
+									value={profileForm.email}
+									onChange={e => setProfileForm({ ...profileForm, email: e.target.value })}
+									required
 								/>
-								<input 
-									id="profile-department" 
-									name="department" 
-									placeholder="Department" 
-									value={profileForm.department} 
-									onChange={e => setProfileForm({...profileForm, department: e.target.value})} 
-									required 
-								/>
-								<input 
-									id="profile-semester" 
-									name="semester" 
-									placeholder="Semester" 
-									value={profileForm.semester} 
-									onChange={e => setProfileForm({...profileForm, semester: e.target.value})} 
-									required 
-								/>
-								<input 
-									id="profile-batch" 
-									name="batch" 
-									placeholder="Batch" 
-									value={profileForm.batch} 
-									onChange={e => setProfileForm({...profileForm, batch: e.target.value})} 
-									required 
-								/>
-								<input 
-									id="profile-rollNumber" 
-									name="rollNumber" 
-									placeholder="Roll Number" 
-									value={profileForm.rollNumber} 
-									onChange={e => setProfileForm({...profileForm, rollNumber: e.target.value})} 
-									required 
-								/>
+								{user.role === 'teacher' && (
+									<input
+										id="profile-teacherId"
+										name="teacherId"
+										placeholder="Teacher ID"
+										value={profileForm.teacherId}
+										onChange={e => setProfileForm({ ...profileForm, teacherId: e.target.value })}
+									/>
+								)}
+								{user.role !== 'teacher' && (
+									<>
+										<input
+											id="profile-studentId"
+											name="studentId"
+											placeholder="Student ID"
+											value={profileForm.studentId}
+											onChange={e => setProfileForm({ ...profileForm, studentId: e.target.value })}
+										/>
+										<input
+											id="profile-department"
+											name="department"
+											placeholder="Department"
+											value={profileForm.department}
+											onChange={e => setProfileForm({ ...profileForm, department: e.target.value })}
+										/>
+										<input
+											id="profile-semester"
+											name="semester"
+											placeholder="Semester"
+											value={profileForm.semester}
+											onChange={e => setProfileForm({ ...profileForm, semester: e.target.value })}
+										/>
+										<input
+											id="profile-batch"
+											name="batch"
+											placeholder="Batch"
+											value={profileForm.batch}
+											onChange={e => setProfileForm({ ...profileForm, batch: e.target.value })}
+										/>
+										<input
+											id="profile-rollNumber"
+											name="rollNumber"
+											placeholder="Roll Number"
+											value={profileForm.rollNumber}
+											onChange={e => setProfileForm({ ...profileForm, rollNumber: e.target.value })}
+										/>
+									</>
+								)}
 								<div className="form-buttons">
 									<button type="submit">Update Profile</button>
 									<button type="button" onClick={() => setShowProfileEdit(false)} className="cancel-btn">
@@ -263,9 +294,19 @@ export default function Home() {
 			<div className="card">
 				<h3>Quick Actions</h3>
 				<ul className="menu">
-					<li><Link to="/timetable">Setup / Edit Timetable</Link></li>
-					<li><Link to="/daily">Today's Attendance</Link></li>
-					<li><Link to="/attendances">View All Attendances</Link></li>
+					{user?.role === 'teacher' ? (
+						<>
+							<li><Link to="/teacher/daily">Daily status</Link></li>
+							<li><Link to="/teacher/subjects">Subjects &amp; classes</Link></li>
+							<li><Link to="/timetable">Timetable</Link></li>
+						</>
+					) : (
+						<>
+							<li><Link to="/timetable">Setup / Edit Timetable</Link></li>
+							<li><Link to="/daily">Today&apos;s Attendance</Link></li>
+							<li><Link to="/attendances">View All Attendances</Link></li>
+						</>
+					)}
 				</ul>
 			</div>
 		</div>

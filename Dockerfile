@@ -44,7 +44,7 @@ USER nodejs
 # Expose port
 EXPOSE 3000
 
-# Set environment variables
+# Set environment variables (JWT_SECRET must be set at runtime, e.g. -e JWT_SECRET=... or in docker-compose)
 ENV NODE_ENV=production
 ENV PORT=3000
 
